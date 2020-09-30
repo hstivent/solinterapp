@@ -1,0 +1,307 @@
+<ion-header no-border>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <!-- <ion-menu-button>
+          <ion-icon class="icon-size" color="medium" name="md-contact"></ion-icon>
+        </ion-menu-button> -->
+
+        <ion-buttons slot="start">
+          <ion-tab-button (click)="closeSesion()">
+            <ion-icon name="md-log-out"></ion-icon>
+            <ion-label color="danger">Cerrar sesión</ion-label>
+          </ion-tab-button>
+        </ion-buttons>
+
+
+        <ion-label>
+           Total Ventas 
+           <ion-badge color="danger"> <h2>{{ totalVenta + totaAdicional | currency:'$' }}</h2> </ion-badge>
+        </ion-label>
+      </ion-buttons>
+  
+      <ion-buttons slot="end">
+        <ion-tab-button (click)="cargarVentas()">
+          <ion-badge color="danger" *ngIf="showListVentasByDay && showListVentasByDay.length > 0">{{showListVentasByDay.length}}</ion-badge>
+          <ion-icon class="icon-size2" color="medium" name="md-calculator"></ion-icon>
+        </ion-tab-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-menu>
+    <ion-text class="padding-text" text-center color="danger">Gestion de Poyectos</ion-text>
+    <ion-item>
+      <ion-avatar slot="start">
+        <ion-icon class="icon-user" color="danger" name="person"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ nombre }} </h2>
+        <p color="primary">
+            <ion-icon name="md-at"></ion-icon>
+             {{ nombrecompleto }}
+        </p>
+      </ion-label>
+    </ion-item>
+  
+   
+    <ion-item class="pointer" (click)="pageProfile()">
+        <ion-icon name="md-cog"></ion-icon>
+        <ion-label color="danger">Ajustes de mi cuenta</ion-label>
+    </ion-item>
+  
+    <ion-item class="pointer" (click)="pageBuzon()">
+        <ion-icon name="md-chatboxes"></ion-icon>
+        <ion-label color="danger"> Buzón de sugerencia</ion-label>
+    </ion-item>
+  
+    <ion-item class="pointer" (click)="pageHelp()">
+      <ion-icon name="md-help-buoy"></ion-icon>
+      <ion-label color="danger"> Centro de ayuda</ion-label>
+    </ion-item>
+  
+    <ion-item class="pointer" (click)="pageProveedores()">
+        <ion-icon name="md-star-outline"></ion-icon>
+        <ion-label color="danger">Proveedores</ion-label>
+    </ion-item>
+  
+    <ion-item class="pointer" (click)="pageTermConditions()">
+      <ion-icon name="md-lock"></ion-icon>
+      <ion-label color="danger"> Terminos y condiciones</ion-label>
+    </ion-item>
+  
+    <ion-item class="pointer" (click)="closeSesion()">
+      <ion-icon name="md-log-out"></ion-icon>
+      <ion-label color="danger">Cerrar sesión</ion-label>
+    </ion-item>
+  </ion-menu>
+  
+  <ion-router-outlet main></ion-router-outlet>
+  
+  <ion-content>
+
+      <div text-center *ngIf="showSpinner;">
+          <ion-spinner name="lines"></ion-spinner>
+      </div>
+
+      <div *ngIf="showListPtv;">
+          <div *ngIf="listAllPtvs && listAllPtvs.length > 0">
+                  <ion-list *ngFor="let ptv of listAllPtvs">
+                      <ion-list-header>
+                        <ion-label>{{ ptv.nombre }}</ion-label>
+                      </ion-list-header>
+                      <ion-item>
+                          <!-- <ion-label>
+                            {{ ptv.nombre }}
+                          </ion-label> -->
+                          <ion-label>
+                               <ion-badge color="danger"> {{ ptv.estado }} </ion-badge>
+                          </ion-label> 
+
+                          <ion-tab-button (click)="getUsuarioByPoint(ptv)">
+                              <ion-icon color="medium" name="people"></ion-icon>
+                              <ion-label>Encargado</ion-label>
+                          </ion-tab-button>
+
+                          <ion-tab-button (click)="verPtv(ptv)">
+                            <ion-icon color="medium" name="search"></ion-icon>
+                            <ion-label>Ver Ventas </ion-label>
+                          </ion-tab-button>
+
+                          <!-- <ion-tab-button (click)="verPtv(ptv)">
+                              <ion-icon color="medium" name="bicycle"></ion-icon>
+                              <ion-label>Domicilios</ion-label>
+                          </ion-tab-button> -->
+                       </ion-item>
+                  </ion-list>
+          </div>
+      </div>
+
+      <div *ngIf="showUserPoint;">
+        <ion-tab-button (click)="regresar()">
+          <ion-icon name="return-left" color="medium"></ion-icon>
+          <ion-label>Regresar</ion-label>
+        </ion-tab-button>
+        
+        <ion-list>
+              <ion-list-header>
+                <ion-label>Punto de venta: {{ nmPtv }}</ion-label>
+              </ion-list-header>
+              <ion-item>
+                  <ion-label>Nombre: {{ listDataUserPoint.nombrecompleto }}</ion-label>
+              </ion-item>
+              <ion-item>
+                  <ion-label>
+                     Usuario: {{ listDataUserPoint.nombre }}
+                  </ion-label> 
+              </ion-item>
+
+              <ion-item>
+                  <ion-label>
+                    Documento: {{ listDataUserPoint.identificacion }}
+                  </ion-label> 
+              </ion-item>
+              <ion-item>
+                  <ion-label>
+                      Celular: {{ listDataUserPoint.telefono }}
+                  </ion-label> 
+              </ion-item>
+              <ion-item>
+                  <ion-label>
+                     Rol: <ion-badge color="danger"> {{ listDataUserPoint.rol }} </ion-badge>
+                  </ion-label> 
+              </ion-item>
+          </ion-list>
+     </div>
+
+      <div *ngIf="showViewVentasByPuntoByDay">
+          <ion-tab-button (click)="regresar()">
+              <ion-icon name="return-left" color="medium"></ion-icon>
+              <ion-label>Regresar</ion-label>
+          </ion-tab-button>
+
+          <ion-searchbar
+          mode="ios"
+          show-cancel-button="true"
+          cancel-button-text="Cancelar"
+          (ionChange)="onSearchProductoVenta($event)"
+          autocomplete="off"
+          autocorrect="on"
+          animated="true" 
+          spellcheck="true"
+          type="text"
+          ionBlur=""
+          placeholder="Buscar producto">
+        </ion-searchbar>
+
+        <div text-center *ngIf="showSpinner;">
+            <ion-spinner name="lines"></ion-spinner>
+        </div>
+
+          <div *ngIf="showListVentasByPuntoByDay && showListVentasByPuntoByDay.length > 0">
+              <ion-item>
+                  <ion-label>Punto de Venta: {{nombrePuntoVenta}}</ion-label>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label> 
+                    Total Venta: 
+                    <ion-badge color="danger"> {{ totalVentaProductosPunto | currency:'$' }} </ion-badge> 
+                  </ion-label>
+              </ion-item>
+
+              <ion-list *ngFor="let vt of showListVentasByPuntoByDay; index as i">
+                 <ion-list-header>
+                     <ion-label>
+                        <!-- <ion-badge color="info">{{ i+1 }}</ion-badge> -->
+                         {{ vt.nombre }}
+                        <!-- <ion-badge color="danger">{{ vt.cantidad }}</ion-badge> -->
+                      </ion-label>
+                   </ion-list-header>
+                 <ion-item>
+                      <ion-label>
+                        Cnt: <ion-badge color="danger">{{ vt.cantidad }}</ion-badge> 
+                      </ion-label>
+                      
+                      <ion-label>
+                          {{ vt.total | currency:'$'}}
+                      </ion-label>
+
+                        <ion-tab-button (click)="viewDetalle(vt)">
+                           <ion-icon name="md-search" color="medium"></ion-icon>
+                           <ion-label>Detalle</ion-label>
+                       </ion-tab-button>
+                       <!--ion-tab-button (click)="viewPreparacion(vt)">
+                           <ion-icon name="md-search" color="medium"></ion-icon>
+                           <ion-label>Detalle</ion-label>
+                       </ion-tab-button-->
+                 </ion-item>
+               </ion-list>
+
+               
+           </div>
+      </div> 
+
+      <div *ngIf="showDetalle;">
+          <ion-tab-button (click)="regresarAllVentas()">
+            <ion-icon name="return-left" color="medium"></ion-icon>
+            <ion-label>Regresar</ion-label>
+          </ion-tab-button>
+  
+          <ion-list>
+                <ion-list-header>
+                  <ion-label>Producto: {{ getVentaDetalle.nombre }}</ion-label>
+                </ion-list-header>
+                <ion-item>
+                    <ion-label>Cantidad: {{ getVentaDetalle.cantidad }}</ion-label>
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                       Precio: {{ getVentaDetalle.precio | currency:'$' }}
+                    </ion-label> 
+                </ion-item>
+  
+                <ion-item>
+                    <ion-label>
+                      Total: {{ getVentaDetalle.total | currency:'$' }}
+                    </ion-label> 
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>
+                      Fecha: {{ getVentaDetalle.fregistro }}
+                    </ion-label> 
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>
+                      Hora: {{ getVentaDetalle.hora }}
+                    </ion-label> 
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                      Responsable: {{ getVentaDetalle.usuario }}
+                    </ion-label> 
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                       Vendido en: <ion-badge color="danger"> {{ getVentaDetalle.ptv }} </ion-badge>
+                    </ion-label> 
+                </ion-item>
+            </ion-list>
+       </div>
+
+  </ion-content>
+  
+  <ion-footer no-border>
+      <ion-toolbar color="m3d">
+        <ion-tabs>
+            <ion-tab-bar slot="bottom">
+              <ion-tab-button (click)="goHomePage()">
+                <ion-icon color="danger" name="md-home"></ion-icon>
+                <ion-label color="medium">Inicio</ion-label>
+              </ion-tab-button>
+  
+              <ion-tab-button (click)="pagePuntos()">
+                <ion-icon color="danger" name="pin"></ion-icon>
+                <ion-label color="medium">Puntos</ion-label>
+              </ion-tab-button>
+  
+              <ion-tab-button (click)="pagePromociones()">
+                <ion-icon color="danger" name="md-cart"></ion-icon>
+                <ion-label color="medium">Promociones</ion-label>
+             </ion-tab-button>
+          
+              <ion-tab-button (click)="pageProducts()">
+                  <ion-icon color="danger" name="md-pizza"></ion-icon>
+                  <ion-label color="medium">Productos</ion-label>
+              </ion-tab-button>
+  
+  
+              <ion-tab-button (click)="pageUsers()">
+                <ion-icon color="danger" name="md-contacts"></ion-icon>
+                <ion-label color="medium">Usuarios</ion-label>
+              </ion-tab-button>
+            </ion-tab-bar>
+          </ion-tabs>
+      </ion-toolbar>
+  </ion-footer>

@@ -1,0 +1,238 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/schedulesvisits"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Reg {{ clientNam }} </ion-title>
+    </ion-toolbar>
+</ion-header>
+<div class="bodycontent">
+<ion-content>
+    <ion-spinner *ngIf="showSpiner" name="crescent" [ngClass]="{'spiner': showSpiner}"></ion-spinner>
+    <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide [ngClass]="{'blur': showSpiner}">
+            <div>
+                <ion-list>
+                    <ion-item>
+                        <ion-icon name="md-camera"></ion-icon>
+                        <ion-label>Registro de Fotos</ion-label>
+                        <ion-button color="primary" (click)="takePicture()">
+                            <ion-icon name="camera"></ion-icon>
+                            <ion-label>Photo</ion-label>
+                        </ion-button>
+                    </ion-item>
+                    <ion-item>
+                        <ion-icon name="md-attach"></ion-icon>
+                        <ion-label>Cargar Bosquejo</ion-label>
+                        <ion-button color="primary" (click)="takePicture2()">
+                            <ion-icon name="camera"></ion-icon>
+                            <ion-label>Photo</ion-label>
+                        </ion-button>
+                    </ion-item>
+                    <ion-grid fixed *ngIf="showIm2">
+                        <ion-row>
+                            <ion-col>
+                                <ion-card class="ion-bsq">
+                                    <img [src]="imageBosq"/>
+                                    <div class="card-title">Bosquejo</div>
+                                </ion-card>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <h1 *ngIf="showIm1">Fotos</h1>
+                    <ion-grid fixed *ngIf="showIm1">
+                        <ion-row>
+                            <ion-col size="6" *ngFor="let item of arrayImage">
+                                <ion-card class="ion-img">
+                                    <img [src]="item.photo_uri"/>
+                                </ion-card>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-list>
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <form [formGroup]="selectedMaterialForm">
+                <h2>Materiales</h2>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Categoría Materiales</ion-label>
+                    <ion-select formControlName="loadCategories" cancelText="Cancel"
+                        (ionChange)="listaMaterials($event)">
+                        <ion-select-option *ngFor="let category of listCategories" value={{category.id_category}}>
+                            {{category.category_name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Escoger Materiales</ion-label>
+                    <ion-select [disabled]="!loadCategories.valid" multiple="true" formControlName="loadMaterials"
+                        cancelText="Cancel" (ionChange)="registerSelectedMaterials($event)">
+                        <ion-select-option *ngFor="let material of listMaterials" value={{material.idmaterial}}>
+                            {{material.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form (ngSubmit)="registerCountMaterials()">
+                <ion-label>Cantidad de Materiales</ion-label>
+                <div *ngIf="listVisits && listVisits.length > 0">
+                    <ion-card class="card-schedules" *ngFor="let listVisits of listVisits">
+                        <ion-card-content>
+                            <ion-card-title> {{ listVisits.name }}</ion-card-title>
+                            <div style="float:right">
+                                <ion-chip>
+                                    <ion-label>cantidad</ion-label>
+                                    <ion-input id="countMaterial{{listVisits.id_material}}" value="{{listVisits.count}}" autocomplete="off"
+                                        type="text"></ion-input>
+                                </ion-chip>
+                            </div>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+                <ion-button class="button-end" shape="round" expand="block" fill="solid" color="primary" type="submit">
+                    <ion-label class="textcapitalize">Aceptar</ion-label>
+                </ion-button>
+                <br/>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form [formGroup]="selectedWorkFoceForm">
+                <h2>Mano de obra</h2>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Categoría Mano de Obra</ion-label>
+                    <ion-select formControlName="loadCategories" cancelText="Cancel"
+                        (ionChange)="listaWorkForces($event)">
+                        <ion-select-option *ngFor="let category of listCategories2" value={{category.id_category}}>
+                            {{category.category_name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Escoger Mano de Obra</ion-label>
+                    <ion-select [disabled]="!loadCategories.valid" multiple="true" formControlName="loadMaterials"
+                        cancelText="Cancel" (ionChange)="registerSelectedWorkforce($event)">
+                        <ion-select-option *ngFor="let manoObra of listWorkForces" value={{manoObra.idmaterial}}>
+                            {{manoObra.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form (ngSubmit)="registerCountWorkf()">
+                <ion-label>Cantidad de Mano de obra</ion-label>
+                <div *ngIf="listWf && listWf.length > 0">
+                    <ion-card class="card-schedules" *ngFor="let listWf of listWf">
+                        <ion-card-content>
+                            <ion-card-title>{{listWf.name}}</ion-card-title>
+                            <div style="float:right">
+                                <ion-chip>
+                                    <ion-label>cantidad</ion-label>
+                                    <ion-input id="countWork{{listWf.id_material}}" value="{{listWf.count}}" autocomplete="off"
+                                        type="text"></ion-input>
+                                </ion-chip>
+                            </div>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+               <ion-button class="button-end" shape="round" expand="block" fill="solid" color="primary" type="submit">
+                <ion-label class="textcapitalize">Aceptar</ion-label>
+            </ion-button>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form [formGroup]="selectedToolForm">
+                <h2>Herramientas</h2>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Categoría herramienta</ion-label>
+                    <ion-select formControlName="loadCategories" cancelText="Cancel" (ionChange)="listaTools($event)">
+                        <ion-select-option *ngFor="let category of listCategories3" value={{category.id_category}}>
+                            {{category.category_name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Escoger herramienta</ion-label>
+                    <ion-select [disabled]="!loadCategories.valid" multiple="true" formControlName="loadMaterials"
+                        cancelText="Cancel" (ionChange)="registerSelectedTools($event)">
+                        <ion-select-option *ngFor="let tool of listTools" value={{tool.idmaterial}}>
+                            {{tool.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form (ngSubmit)="registerCountTools()">
+                <ion-label>Cantidad de heramientas</ion-label>
+
+                <div *ngIf="listTool && listTool.length > 0">
+                    <ion-card class="card-schedules" *ngFor="let listTool of listTool">
+                        <ion-card-content>
+                            <ion-card-title> {{listTool.name}}</ion-card-title>
+                            <div style="float:right">
+                                <ion-chip>
+                                    <ion-label>cantidad</ion-label>
+                                    <ion-input id="countTool{{listTool.id_material}}" value="{{listTool.count}}" autocomplete="off"
+                                        type="text"></ion-input>
+                                    </ion-chip>
+                                </div>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+                <ion-button *ngIf="btnRegister" shape="round" expand="block" fill="solid" color="primary" type="submit">
+                    <ion-label class="textcapitalize">Aceptar</ion-label>
+                </ion-button>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form [formGroup]="selectedMachinaryForm" (ngSubmit)="registerSelectedMachinaries()">
+                <h2>Maquinarias</h2>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Categoría maquinaria</ion-label>
+                    <ion-select formControlName="loadCategories" cancelText="Cancel" (ionChange)="listaMachinary($event)">
+                        <ion-select-option *ngFor="let category of listCategories4" value={{category.id_category}}>
+                            {{category.category_name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item class="item">
+                    <ion-icon name="keypad"></ion-icon>
+                    <ion-label>Escoger maquinaria</ion-label>
+                    <ion-select [disabled]="!loadCategories.valid" multiple="true" formControlName="loadMaterials"
+                        cancelText="Cancel" (ionChange)="registerSelectedMachinaries($event)">
+                        <ion-select-option *ngFor="let machinary of listmachinarys" value={{machinary.idmaterial}}>
+                            {{machinary.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </form>
+        </ion-slide>
+        <ion-slide>
+            <form (ngSubmit)="registerCountMachinary()">
+                <ion-label>Cantidad de Maquinaria</ion-label>
+                <div *ngIf="listmachinarys && listmachinarys.length > 0">
+                    <ion-card class="card-schedules" *ngFor="let listmachinarys of listmachinarys">
+                        <ion-card-content>
+                            <ion-card-title> {{ listmachinarys.name }}</ion-card-title>
+                            <div style="float:right">
+                                <ion-chip>
+                                    <ion-label>cantidad</ion-label>
+                                    <ion-input id="countMachinary{{listmachinarys.id_material}}" value="{{ listmachinarys.count }}"
+                                        autocomplete="off" type="text"></ion-input>
+                                </ion-chip>
+                            </div>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+                <ion-button class="button-end" shape="round" expand="block" fill="solid" color="primary" type="submit">
+                     <ion-label class="textcapitalize">Aceptar</ion-label>
+                 </ion-button>
+            </form>
+        </ion-slide>
+      </ion-slides>      
+    </ion-content>
+</div>

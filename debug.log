@@ -1,0 +1,1 @@
+[0822/131216.387:ERROR:process_memory_win.cc(73)] ReadMemory at 0x256a8b91000 of 384 bytes failed: Solo se completó una parte de una solicitud ReadProcessMemory o WriteProcessMemory. (0x12B)

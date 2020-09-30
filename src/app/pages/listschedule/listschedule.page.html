@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/schedulesvisits"></ion-back-button>
+    </ion-buttons>
+    <ion-title> {{ clientName }} </ion-title>
+    <ion-buttons slot="end">
+      <ion-fab-button color="light" (click)="addSection()">
+        <ion-icon color="primary" name="add" style="color:white"></ion-icon>
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let item of listshowClient">
+    <ion-card-header>
+      <ion-card-subtitle>{{item.client_nit}}</ion-card-subtitle>
+      <ion-card-title>{{item.client_name}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <div *ngIf="listAllScheduleso && listAllScheduleso.length > 0">
+    <ion-card>
+      <ion-card-header>
+        Secciones
+      </ion-card-header>
+      <ion-list>
+        <ion-item *ngFor="let so of listAllScheduleso" (click)="serviceorder(so)">
+          <ion-grid style="margin-left: 0px">
+            <ion-row>
+              <ion-col size="12">
+                <label><strong>{{so.section_name.toUpperCase()}}</strong></label>
+              </ion-col>
+              <ion-col size="12">
+                <span>{{ so.section_descrip }}</span>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  </div>
+</ion-content>

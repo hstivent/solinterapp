@@ -1,0 +1,30 @@
+.card-schedules
+{
+    border-radius: 5px;
+    border-left-style: solid;
+    border-left-color: #e0e0e0;
+    border-left-width: thick;
+    background: white;
+}
+
+.item
+{
+  --border-radius:30px;
+  padding: 5%;
+}
+
+.bodycontent
+{
+   background: #1971d1; 
+   background: -webkit-linear-gradient(to right #08377b, #1971d1); 
+   background: linear-gradient(to right, #08377b, #1971d1); 
+   background-repeat: no-repeat;
+   height: 100%;
+   width: 100%;
+   overflow: auto;
+}
+
+.size
+{
+ zoom: 1.5;
+}

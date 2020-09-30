@@ -1,0 +1,8 @@
+{
+  "name": "appptg",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/schedulesvisits"></ion-back-button>
+        </ion-buttons>
+        <ion-searchbar mode="ios" show-cancel-button="true" cancel-button-text="Cancelar" (ionChange)="onSearch($event)" autocomplete="off" autocorrect="on" animated="true" spellcheck="true" type="text" ionBlur="" color="ligth" placeholder="Buscar Maquina">
+        </ion-searchbar>
+        <ion-buttons slot="end">
+            <ion-fab-button color="light" (click)="addTipoObra()">
+                <ion-icon name="add" color="primary"></ion-icon>
+            </ion-fab-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div text-center *ngIf="showSpinner;">
+        <ion-spinner name="lines"></ion-spinner>
+    </div>
+
+    <div *ngIf="showListObras">
+        <div *ngIf="listAllObras && listAllObras.length > 0">
+            <ion-card class="card-schedules" *ngFor="let obr of listAllObras">
+                <ion-card-header>
+                    <ion-card-title> {{obr.name.toUpperCase()}} </ion-card-title>
+                    <ion-card-title> Precio: {{ obr.price | currency:'$' }} </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <div style="float:right">
+                        <ion-chip>
+                            <ion-icon mode="ios" (click)="edit(obr)" name="create" color="primary" class="icon-circle-small-e">
+                            </ion-icon>
+                            <ion-icon mode="ios" (click)="delete(obr.idmachinary)" name="trash" color="primary" class="icon-circle-small-d"></ion-icon>
+                        </ion-chip>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+    <div *ngIf="Smessage" style="margin-top: 250px;text-align: center;">
+        {{message}}
+    </div>
+    <form *ngIf="showForm2;" [formGroup]="formMaquinaria" (ngSubmit)="register()">
+        <ion-item class="item">
+            <ion-icon name="paper" color="primary" mode="ios"></ion-icon>
+            <ion-label>Maquina</ion-label>
+            <ion-input formControlName="name" autocomplete="off" type="text"></ion-input>
+            <input type="hidden" formControlName="id">
+        </ion-item>
+
+        <ion-item class="item">
+            <ion-icon name="logo-usd" color="primary" mode="ios"></ion-icon>
+            <ion-label>Precio</ion-label>
+            <ion-input formControlName="price" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+
+        <div class="seperar">
+            <ion-item mode="ios" class='item'>
+                <ion-button style="margin-left:110px;" shape="round" mode="ios" color="light" type="submit">
+                    <ion-label class="textcapitalize" style="color:#0d4690">Registrar</ion-label>
+                    <ion-icon style="margin-left:100px" name="send" mode="ios" color="primary"></ion-icon>
+                </ion-button>
+            </ion-item>
+        </div>
+
+    </form>
+    <h4 *ngIf="showForm" style="margin-top: 250px;margin-left: 20px;margin-right: 20px;">
+        Esta seccion es para subir el archivo de registro para maquinaria.
+    </h4>
+    <ion-button *ngIf="showForm" class="btnsub" (click)="upload()" color="warning" expand="block" fill="solid">
+        <ion-label class="colorText">Subir archivo</ion-label>
+    </ion-button>
+</ion-content>
+<ion-footer *ngIf="showForm">
+    <ion-button (click)="SendUri()" color="primary" expand="block" fill="solid">
+        <ion-label class="colorText">Aceptar</ion-label>
+    </ion-button>
+</ion-footer>

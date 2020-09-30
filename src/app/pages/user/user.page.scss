@@ -1,0 +1,41 @@
+.card-schedules
+{
+    border-radius: 5px;
+    border-left-style: solid;
+    border-left-color: #e0e0e0;
+    border-left-width: thick;
+    background: white;
+}
+
+.item
+{
+  --border-radius:30px;
+}
+
+.bodycontent
+{
+   background: white; 
+   background-repeat: no-repeat;
+   height: 100%;
+   width: 100%;
+   overflow: auto;
+}
+
+.size
+{
+ zoom: 1.5;
+}
+
+.blur{
+  filter:blur(5px);
+}
+
+.spiner{
+  position: fixed;
+  top: 40%;
+  left: 40%;
+  height: 100px;
+  width: 100px;
+  z-index: 100;
+  opacity: 0.5;
+}

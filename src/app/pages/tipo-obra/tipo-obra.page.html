@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/schedulesvisits"></ion-back-button>
+    </ion-buttons>
+    <ion-searchbar
+          mode="ios"
+          style="background:white;"
+          show-cancel-button="true"
+          cancel-button-text="Cancelar"
+          (ionChange)="onSearch($event)"
+          autocomplete="off"
+          autocorrect="on"
+          animated="true" 
+          spellcheck="true"
+          type="text"
+          ionBlur=""
+          color="ligth"
+          placeholder="Buscar Tipo de Obra">
+    </ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-fab-button color="primary" (click)="addTipoObra()">
+        <ion-icon name="add" style="color:white"></ion-icon>
+        <ion-badge  *ngIf="listAllObras && listAllObras.length > 0">{{listAllObras.length}}
+        </ion-badge>
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="bodycontent">
+  <div text-center *ngIf="showSpinner;">
+    <ion-spinner name="lines"></ion-spinner>
+  </div>
+
+  <div *ngIf="showListObras">
+    <div *ngIf="listAllObras && listAllObras.length > 0">
+      <ion-card class="card-schedules" *ngFor="let obr of listAllObras">
+        <ion-card-header>
+          <ion-card-title> {{obr.nombre.toUpperCase()}} </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Estado: 
+          <span *ngIf="obr.estado == 1">
+            Activa
+          </span>
+          <div style="float:right">
+            <ion-icon color="primary" (click)="edit(obr)" class="size" mode="ios" name="create"></ion-icon>
+            <ion-icon color="primary" (click)="delete(obr.idtipo)" class="size" mode="ios" name="trash"></ion-icon>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+
+
+  <form *ngIf="showFormObra;" [formGroup]="formObra" (ngSubmit)="register()">
+    <ion-item class="item">
+       <ion-icon name="paper" color="primary" mode="ios"></ion-icon>
+       <ion-label>Obra</ion-label>
+       <ion-input formControlName="name" autocomplete="off" type="text"></ion-input>
+       <input type="hidden" formControlName="id" >
+    </ion-item>
+
+    <div class="seperar">
+        <ion-item mode="ios" class='item'>
+            <ion-button style="margin-left:110px;" shape="round" mode="ios" color="light" type="submit">
+            <ion-label class="textcapitalize" style="color:#0d4690">Registrar</ion-label>
+            <ion-icon style="margin-left:100px" name="send" mode="ios" color="primary"></ion-icon>
+          </ion-button>
+      </ion-item>
+      </div>
+
+ </form> 
+</div>

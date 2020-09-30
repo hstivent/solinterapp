@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start"> 
+          <ion-back-button defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Gestión de materiales</ion-title>
+
+      <ion-buttons slot="end">
+          <ion-fab-button color="danger" (click)="addCategory()">
+          <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-searchbar
+  mode="ios"
+  show-cancel-button="true"
+  cancel-button-text="Cancelar"
+  (ionChange)="onSearch($event)"
+  autocomplete="off"
+  autocorrect="on"
+  animated="true" 
+  spellcheck="true"
+  type="text"
+  ionBlur=""
+  placeholder="Buscar material">
+</ion-searchbar>
+<div text-center *ngIf="showSpinner;">
+  <ion-spinner name="lines"></ion-spinner>
+</div>
+
+<div *ngIf="showListCategory;">
+    <div *ngIf="listAllCategories && listAllCategories.length > 0">
+        <ion-list *ngFor="let cat of listAllCategories">
+          
+            <ion-item>
+              <ion-label>
+                {{ cat.category_name }} 
+              </ion-label>
+                <ion-tab-button (click)="editCategory(cat)">
+                <ion-icon name="md-create" color="danger"></ion-icon>
+                <ion-label color="dark">Editar</ion-label>
+                </ion-tab-button>
+    
+                <ion-tab-button (click)="deleteCategory(cat.idcategory)">
+                    <ion-icon name="md-trash" color="danger"></ion-icon>
+                    <ion-label color="dark">Eliminar</ion-label>
+                </ion-tab-button>
+            </ion-item>
+        </ion-list>
+</div>
+ </div>
+ <form *ngIf="showFormCategory;" [formGroup]="registerCategoryForm" (ngSubmit)="registerCategory()">
+
+  <ion-item>
+       <ion-icon name="md-document"></ion-icon>
+       <ion-label>Nombre</ion-label>
+       <ion-input formControlName="categoryName" autocomplete="off" type="text"></ion-input>
+       <input type="hidden" formControlName="idCategory" >
+  </ion-item>
+
+   <ion-item *ngIf="categoryName.hasError('required') && categoryName.touched">
+     <p>* El nombre de la categoria es requerido!</p>
+   </ion-item>
+   
+   <ion-item>
+    <ion-icon name="md-document"></ion-icon>
+    <ion-label>Estado</ion-label>
+    <ion-input formControlName="categoryState" autocomplete="off" type="text"></ion-input>
+   
+</ion-item>
+
+<ion-item *ngIf="categoryState.hasError('required') && categoryState.touched">
+  <p>* El estado de la categoria es requerido!</p>
+</ion-item>
+
+   <br><br>
+
+   <br><br>
+   <ion-button  *ngIf="btnRegister" [disabled]="!registerCategoryForm.valid" expand="block" fill="solid" color="danger" type="submit">
+         <ion-label class="textcapitalize">Acceptar</ion-label>
+   </ion-button>
+   <ion-button *ngIf="btnUpdate" expand="block" fill="solid" color="danger" type="submit">
+     <ion-label class="textcapitalize">Editar</ion-label>
+   </ion-button>
+ </form> 
+</ion-content>
+

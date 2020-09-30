@@ -1,0 +1,77 @@
+<div class="bodycontent" > 
+
+
+    <ion-text>
+        <img class="img-login" src="http://sigma7.com.co/assets/img/clients/logo-solinter_gris.png">    
+    </ion-text>
+      
+
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+      <div class="seperar">
+        <ion-item mode="ios" class='item'>
+          <ion-icon name="person" color="primary"></ion-icon>
+          <ion-input type="text" class="textlowercase" autofocus formControlName="username" placeholder="{{loginComponentText.placeholderUser}}"
+            autocomplete="off"></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="seperar">
+        <ion-item mode="ios" class='item'>
+          <ion-icon name="key" color="primary"></ion-icon>
+          <ion-input type="password"  formControlName="password" placeholder="{{loginComponentText.placeholderPassword}}"
+            autocomplete="off"></ion-input>
+        </ion-item>
+      </div>
+
+       <div class="seperar">
+          <ion-item mode="ios" class='item'>
+              <ion-button style="margin-left:110px;"  
+              shape="round" mode="ios" color="light" type="submit">
+              <ion-label class="textcapitalize" style="color:#0d4690">Entrar</ion-label>
+              <!-- <ion-icon style="margin-right:100px" name="unlock" color="primary"></ion-icon>
+                  -->
+              <ion-icon style="margin-left:100px" name="unlock" color="primary"></ion-icon>
+            </ion-button>
+           <!-- <div style="margin-left:110px" >
+              <ion-input type="submit"></ion-input>
+            </div>
+            Login<ion-icon name="send" color="primary"></ion-icon>
+          -->
+        </ion-item>
+        </div>
+
+      <div class="seperar">
+         <div class="recoveryPassword">
+            <ion-label style="color:white">
+              <a (click)="resetpass()">
+                 <span style="color:white;">
+                    <br>
+                    Olvido su contraseña?
+                 </span>
+                </a>
+              </ion-label>
+          </div>
+        </div>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+        <div class="seperar">
+        <div class="text-login">
+           <ion-label style="color:white">
+                © {{ dateNow | date:'yyyy' }} Sigma7 S.A.S 
+           </ion-label>
+           <br>
+           <ion-label style="color:white">
+            Todos los derechos reservados.
+           </ion-label>
+          </div>
+       </div>
+    </form>
+  </div>
+
+  
+

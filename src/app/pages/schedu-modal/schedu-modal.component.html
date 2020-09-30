@@ -1,0 +1,55 @@
+<ion-header translucent="" class="ios header-ios header-translucent header-translucent-ios hydrated">
+    <ion-toolbar class="ios hydrated">
+    <ion-title *ngIf="showListSchedules" class="ios title-ios hydrated">Visitas pendientes</ion-title>
+    <ion-title *ngIf="showListSchedules==false" class="ios title-ios hydrated">{{titulo}}</ion-title>
+    <ion-buttons slot="end" class="buttons-last-slot sc-ion-buttons-ios-h sc-ion-buttons-ios-s ios hydrated">
+        <ion-button (click)="dismiss()" class="ios button button-clear ion-activatable ion-focusable hydrated">Cerrar</ion-button>
+    </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ng-container *ngIf="showListSchedules; else elseTemplate">
+        <ion-card *ngFor="let vit of listAllSchedules">
+            <ion-item (click)="orders(vit)">
+                <ion-grid style="margin-left: 0px">
+                    <ion-row>
+                        <ion-col size="12">
+                            <label><strong>{{vit.client_name}}</strong></label>
+                        </ion-col>
+                        <ion-col size="12">
+                            <span>NIT: {{vit.client_nit}}</span>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-card>
+    </ng-container>
+    <ng-template #elseTemplate>
+        <form [formGroup]="registerScheduleForm" (ngSubmit)="registerSchedule(1)">
+            <ion-item-sliding>
+                <ion-item class="item">
+                    <ion-icon name="md-calendar"></ion-icon>
+                    <ion-label>Fecha</ion-label>
+                    <ion-datetime formControlName="ScheduleDate" displayFormat="MMM D, YYYY" min="2018" max="2030">
+                    </ion-datetime>
+                </ion-item>
+
+                <ion-item class="item">
+                    <ion-icon name="md-time"></ion-icon>
+                    <ion-label>Hora</ion-label>
+                    <ion-datetime formControlName="ScheduleTime" displayFormat="h:mm a"></ion-datetime>
+                </ion-item>
+                <br>
+            </ion-item-sliding>
+            <ion-button [disabled]="!registerScheduleForm.valid" shape="round" expand="block"
+                fill="solid" color="primary" type="submit">
+                <ion-label class="textcapitalize">Aceptar</ion-label>
+            </ion-button>
+
+            <ion-button expand="block" fill="solid" shape="round" color="danger" type="reset">
+                <ion-label class="textcapitalize">Cancelar</ion-label>
+            </ion-button>
+        </form>
+    </ng-template>
+</ion-content>

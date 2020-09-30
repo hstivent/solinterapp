@@ -1,0 +1,84 @@
+<ion-menu side="start" menuId="menu">
+    <ion-header>
+        <ion-toolbar color="primary">
+            <ion-title>Sol-interApp</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ng-container *ngIf="typeuser == 1; else elseTemplate">
+            <ion-item class="pointer padding-text" (click)="pageVisit()">
+                <ion-icon name="gift"></ion-icon>
+                <ion-label color="medium">Gestion de Visitas</ion-label>
+            </ion-item>
+            <ion-item class="pointer padding-text" (click)="pageUser()">
+                <ion-icon name="person-add"></ion-icon>
+                <ion-label color="medium"> Usuarios </ion-label>
+            </ion-item>
+            <ion-item class="pointer padding-text" (click)="pageClient()">
+                <ion-icon name="business"></ion-icon>
+                <ion-label color="medium">Empresas</ion-label>
+            </ion-item>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <ion-item class="pointer padding-text" (click)="pageVisit()">
+                <ion-icon name="gift"></ion-icon>
+                <ion-label color="medium">Gestion de Visitas</ion-label>
+            </ion-item>
+        </ng-template>       
+        <ion-item class="pointer padding-text" (click)="logout()">
+            <ion-icon name="md-log-out"></ion-icon>
+            <ion-label color="medium">Cerrar sesión</ion-label>
+        </ion-item>
+    </ion-content>
+</ion-menu>
+
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button>
+                <ion-icon class="size-menu" name="menu"></ion-icon>
+            </ion-menu-button>
+        </ion-buttons>
+        <ion-searchbar mode="ios" show-cancel-button="true" cancel-button-text="Cancelar" (ionChange)="onSearch($event)"
+            autocomplete="off" autocorrect="on" animated="true" spellcheck="true" type="text" ionBlur="" color="ligth"
+            placeholder="Buscar Visita">
+        </ion-searchbar>
+        <ion-buttons slot="end">
+            <ion-fab-button color="light" (click)="addSchedule()">
+                <ion-icon color="primary" name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <ion-spinner *ngIf="showSpiner" name="crescent" [ngClass]="{'spiner': showSpiner}"></ion-spinner>
+    <div *ngIf="showListSchedules" [ngClass]="{'blur': showSpiner}">
+        <ion-card *ngFor="let vit of listAllSchedules">
+            <ion-item (click)="orderes(vit)">
+                <ion-grid style="margin-left: 0px">
+                    <ion-row>
+                        <ion-col size="12">
+                            <span>Empresa: {{vit.client_name}}</span>
+                        </ion-col>
+                        <ion-col size="12">
+                            <span>Numero de visitas: <ion-badge color="warning">{{vit.visits}}</ion-badge></span>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-button fill="outline" slot="end">Ver</ion-button>
+            </ion-item>
+        </ion-card>
+        <ion-card *ngIf="listAllSchedules == 0" style="margin-top: 60%;height: 100px;align-items: center;" >
+            <ion-card-title style="top: 40%;left: 16%;">No tiene visitas pendientes</ion-card-title>
+        </ion-card>
+    </div>
+    <ion-fab *ngIf="listPenSchedules && listPenSchedules.length > 0" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="openModal()" *ngIf="typeuser == 3">
+            <ion-badge color="primary">{{listPenSchedules.length}}</ion-badge>
+            <ion-icon name="calendar"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+

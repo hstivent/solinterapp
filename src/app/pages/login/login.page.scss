@@ -1,0 +1,76 @@
+.item
+{
+  --border-radius:30px;
+  padding: 5%;
+}
+
+
+.bodycontent
+{
+   background: #1971d1; 
+   background: -webkit-linear-gradient(to right #08377b, #1971d1); 
+   background: linear-gradient(to right, #08377b, #1971d1); 
+   background-repeat: no-repeat;
+   height: 100%;
+   width: 100%;
+   background-size: 100%;
+}
+
+.img-login
+{
+  display: block;
+  max-width: 50%;
+  max-height: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+
+.text-login
+{
+  text-align: center;
+  color:#ffff;
+  font-size:18px;
+  margin-top:10px;
+}
+
+.textcapitalize
+{
+  text-transform:capitalize;
+  font-size:20px;
+}
+
+.textlowercase
+{
+  text-transform:lowercase;
+}
+
+.seperar
+{
+  margin-top:8px;
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+.centerlogin
+{
+  margin-left: auto; 
+  margin-right: auto; 
+  text-transform: capitalize;
+}
+
+.recoveryPassword
+{
+  text-align: center;
+  margin-top: 30px;
+  color: #ffff;
+}
+
+.recoveryPassword a
+{
+  cursor: pointer;
+  color: #ffff;
+  text-decoration:none;
+}
+

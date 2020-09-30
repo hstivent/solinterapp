@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start"> 
+          <ion-back-button defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Gestión de productos</ion-title>
+
+      <ion-buttons slot="end">
+          <ion-fab-button color="danger" (click)="addProduct()">
+          <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+      </ion-buttons>
+      </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-searchbar
+        mode="ios"
+        show-cancel-button="true"
+        cancel-button-text="Cancelar"
+        (ionChange)="onSearch($event)"
+        autocomplete="off"
+        autocorrect="on"
+        animated="true" 
+        spellcheck="true"
+        type="text"
+        ionBlur=""
+        placeholder="Buscar producto">
+   </ion-searchbar>
+
+   <div text-center *ngIf="showSpinner;">
+     <ion-spinner name="lines"></ion-spinner>
+   </div>
+
+  <div *ngIf="showListProduct;">
+    <div *ngIf="listAllProducts && listAllProducts.length > 0">
+            <ion-list *ngFor="let pro of listAllProducts">
+                <ion-list-header>
+                    <ion-label>
+                      {{ pro.nombre }} <ion-badge color="danger"> {{ pro.tipo }} </ion-badge>
+                    </ion-label>
+                </ion-list-header>
+                <ion-item>
+                    
+                    <ion-label>
+                          {{ pro.precio | currency:'$' }}
+                    </ion-label>
+                    <ion-tab-button (click)="editProduct(pro)">
+                    <ion-icon name="md-create" color="danger"></ion-icon>
+                    <ion-label color="dark">Editar</ion-label>
+                    </ion-tab-button>
+        
+                    <ion-tab-button (click)="deleteProduct(pro.idproducto)">
+                        <ion-icon name="md-trash" color="danger"></ion-icon>
+                        <ion-label color="dark">Eliminar</ion-label>
+                    </ion-tab-button>
+                </ion-item>
+            </ion-list>
+    </div>
+   </div>
+
+   <form *ngIf="showFormProduct;" [formGroup]="registerProductForm" (ngSubmit)="registerProduct()">
+    <ion-item>
+         <ion-icon name="md-document"></ion-icon>
+         <ion-label>Producto</ion-label>
+         <ion-input formControlName="name" autocomplete="off" type="text"></ion-input>
+         <input type="hidden" formControlName="idproducto" >
+    </ion-item>
+
+     <ion-item *ngIf="name.hasError('required') && name.touched">
+       <p>* El nombre del producto es requerido!</p>
+     </ion-item>
+
+     <br><br>
+       
+    <ion-item>
+       <ion-icon name="md-contact"></ion-icon>
+       <ion-label>Precio</ion-label>
+       <ion-input formControlName="price" autocomplete="off" type="number"></ion-input>
+     </ion-item>
+
+     <ion-item *ngIf="price.hasError('required') && price.touched">
+      <p>* El precio es requerido!</p>
+    </ion-item>
+
+    <br><br>
+     
+     <ion-item>
+         <ion-icon name="md-people"></ion-icon>
+         <ion-label>Catergoria</ion-label>
+         <ion-input formControlName="category" autocomplete="off" type="text"></ion-input>
+     </ion-item>
+
+     <ion-item *ngIf="category.hasError('required') && category.touched">
+       <p>*La categoria es requerida!</p>
+     </ion-item>
+
+     <br><br>
+     <ion-button  *ngIf="btnRegister" [disabled]="!registerProductForm.valid" expand="block" fill="solid" color="danger" type="submit">
+           <ion-label class="textcapitalize">Acceptar</ion-label>
+     </ion-button>
+
+     <ion-button *ngIf="btnUpdate" expand="block" fill="solid" color="danger" type="submit">
+       <ion-label class="textcapitalize">Editar</ion-label>
+     </ion-button>
+   </form> 
+</ion-content>

@@ -1,0 +1,120 @@
+<ion-header translucent="" class="ios header-ios header-translucent header-translucent-ios hydrated">
+  <ion-toolbar class="ios hydrated">
+    <ion-title *ngIf="showListSchedules" class="ios title-ios hydrated">Nueva sección</ion-title>
+    <ion-buttons slot="end" class="buttons-last-slot sc-ion-buttons-ios-h sc-ion-buttons-ios-s ios hydrated">
+      <ion-button (click)="dismiss()" class="ios button button-clear ion-activatable ion-focusable hydrated">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-spinner *ngIf="showSpiner" name="crescent" [ngClass]="{'spiner': showSpiner}"></ion-spinner>
+<ion-content padding>
+  <ng-container *ngIf="type==1; else elseTemplate">
+    <!-- Trabajador -->
+    <form *ngIf="typeuser==3;" [ngClass]="{'blur': showSpiner}" [formGroup]="registerScheduleForm" (ngSubmit)="registerSchedule(1)">
+        <ion-item-sliding>
+            <ion-item class="item">
+                <ion-icon name="business"></ion-icon>
+                <ion-label>Empresa</ion-label>
+                <ion-select placeholder="Seleccionar" formControlName="ClientName">
+                    <ion-select-option *ngFor="let cli of listAllClients" value="{{ cli.idclient }}">
+                        {{ cli.client_name }}
+                    </ion-select-option>
+                </ion-select>
+                <input type="hidden" formControlName="idSchedule">
+                <input type="hidden" value="1" formControlName="type">
+            </ion-item>
+    
+            <ion-item class="item">
+                <ion-icon name="clipboard"></ion-icon>
+                <ion-label>Descripción</ion-label>
+                <ion-input formControlName="DescSchedule" autocomplete="off" type="text"></ion-input>
+    
+            </ion-item>
+    
+            <ion-item class="item">
+                <ion-icon name="md-calendar"></ion-icon>
+                <ion-label>Fecha</ion-label>
+                <ion-datetime formControlName="ScheduleDate" displayFormat="MMM D, YYYY" min="2018" max="2030">
+                </ion-datetime>
+            </ion-item>
+    
+            <ion-item class="item">
+                <ion-icon name="md-time"></ion-icon>
+                <ion-label>Hora</ion-label>
+                <ion-datetime formControlName="ScheduleTime" displayFormat="h:mm a"></ion-datetime>
+            </ion-item>
+            <br>
+        </ion-item-sliding>
+        <ion-button [disabled]="!registerScheduleForm.valid" shape="round" expand="block"
+            fill="solid" color="primary" type="submit">
+            <ion-label class="textcapitalize">Aceptar</ion-label>
+        </ion-button>
+    
+        <ion-button expand="block" fill="solid" shape="round" color="danger" type="reset">
+            <ion-label class="textcapitalize">Cancelar</ion-label>
+        </ion-button>
+    </form>
+    
+    <!-- Administrador -->
+    <form *ngIf="typeuser==2 || typeuser==1;" [ngClass]="{'blur': showSpiner}" [formGroup]="registerScheduleForm2" (ngSubmit)="registerSchedule(2)">
+      <ion-item-sliding>
+        <ion-item class="item">
+            <ion-icon name="business"></ion-icon>
+            <ion-label>Empresa</ion-label>
+            <ion-select placeholder="Seleccionar" formControlName="ClientName2">
+                <ion-select-option *ngFor="let cli of listAllClients" value="{{ cli.idclient }}">
+                    {{ cli.client_name }}
+                </ion-select-option>
+            </ion-select>
+            <input type="hidden" value="2" formControlName="type">
+        </ion-item>
+    
+        <ion-item class="item">
+            <ion-icon name="clipboard"></ion-icon>
+            <ion-label>Descripción</ion-label>
+            <ion-input formControlName="DescSchedule2" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+    
+        <ion-item class="item" mode="ios">
+            <ion-icon name="md-people"></ion-icon>
+            <ion-label>Usuario</ion-label>
+            <ion-select placeholder="Select One" formControlName="UserName2">
+                <ion-select-option *ngFor="let usr of listAllUsers" value="{{ usr.iduser }}"> {{ usr.user_name }}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <br>
+      </ion-item-sliding>
+      <ion-button [disabled]="!registerScheduleForm2.valid" shape="round" expand="block" fill="solid" color="danger"
+          type="submit">
+          <ion-label class="textcapitalize">Asignar</ion-label>
+      </ion-button>
+    </form>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <form [formGroup]="sectionForm" [ngClass]="{'blur': showSpiner}" (ngSubmit)="registerSection()">
+        <ion-item-sliding>
+            <ion-item>
+              <ion-label position="floating">Nombre de sección</ion-label>
+              <ion-input formControlName="nameSection" autocomplete="off" autofocus pattern="text" required></ion-input>
+            </ion-item>
+    
+            <ion-item>
+              <ion-label position="floating">Descripción</ion-label>
+              <ion-textarea formControlName="descSection" ></ion-textarea>
+            </ion-item>
+            <br/><br/>
+        </ion-item-sliding>
+        <ion-button shape="round" expand="block"
+            fill="solid" color="primary" type="submit">
+            <ion-label class="textcapitalize">Aceptar</ion-label>
+        </ion-button>
+    
+        <ion-button (click)="dismiss()" expand="block" fill="solid" shape="round" color="danger" type="reset">
+            <ion-label class="textcapitalize">Cancelar</ion-label>
+        </ion-button>
+    </form>
+  </ng-template>
+  
+
+</ion-content>

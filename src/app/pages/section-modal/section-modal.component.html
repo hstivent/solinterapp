@@ -1,0 +1,35 @@
+<ion-header translucent="" class="ios header-ios header-translucent header-translucent-ios hydrated">
+    <ion-toolbar class="ios hydrated">
+      <ion-title *ngIf="showListSchedules" class="ios title-ios hydrated">Nueva sección</ion-title>
+      <ion-buttons slot="end" class="buttons-last-slot sc-ion-buttons-ios-h sc-ion-buttons-ios-s ios hydrated">
+        <ion-button (click)="dismiss()" class="ios button button-clear ion-activatable ion-focusable hydrated">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-spinner *ngIf="showSpiner" name="crescent" [ngClass]="{'spiner': showSpiner}"></ion-spinner>
+  <ion-content padding>
+      <form [formGroup]="sectionForm" [ngClass]="{'blur': showSpiner}" (ngSubmit)="registerSection()">
+          <ion-item-sliding>
+              <ion-item>
+                <ion-label position="floating">Nombre de sección</ion-label>
+                <ion-input formControlName="nameSection" autocomplete="off" autofocus pattern="text" required></ion-input>
+              </ion-item>
+      
+              <ion-item>
+                <ion-label position="floating">Descripción</ion-label>
+                <ion-textarea formControlName="descSection" ></ion-textarea>
+              </ion-item>
+              <br/><br/>
+          </ion-item-sliding>
+          <ion-button shape="round" expand="block"
+              fill="solid" color="primary" type="submit">
+              <ion-label class="textcapitalize">Aceptar</ion-label>
+          </ion-button>
+      
+          <ion-button (click)="dismiss()" expand="block" fill="solid" shape="round" color="danger" type="reset">
+              <ion-label class="textcapitalize">Cancelar</ion-label>
+          </ion-button>
+      </form>
+  
+  </ion-content>
+  

@@ -1,0 +1,7 @@
+{
+  "appId": "sigma7.com.co",
+  "appName": "gestionproyectos",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

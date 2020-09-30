@@ -1,0 +1,85 @@
+<ion-header translucent="" class="ios header-ios header-translucent header-translucent-ios hydrated">
+    <ion-toolbar class="ios hydrated">
+      <ion-title *ngIf="showListSchedules" class="ios title-ios hydrated">Nuevo usuario</ion-title>
+      <ion-buttons slot="end" class="buttons-last-slot sc-ion-buttons-ios-h sc-ion-buttons-ios-s ios hydrated">
+        <ion-button (click)="dismiss()" class="ios button button-clear ion-activatable ion-focusable hydrated">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<ion-content>
+  <ion-spinner *ngIf="showSpinner" name="crescent" [ngClass]="{'spiner': showSpinner}"></ion-spinner>
+  <form [formGroup]="registerUserForm" (ngSubmit)="valid()"  [ngClass]="{'blur': showSpinner}">
+      <ion-item mode="ios" class='item'>
+          <ion-icon name="md-people" color="primary"></ion-icon>
+          <ion-label>Tipo de Usuario</ion-label>
+          <ion-select placeholder="" formControlName="UserTypeName">
+              <ion-select-option *ngFor="let usrt of listAllUserType" value="{{ usrt.idusertype }}">
+                  {{ usrt.usertypename }} </ion-select-option>
+          </ion-select>
+      </ion-item>
+      <ion-item>
+          <ion-icon name="md-contact" color="primary"></ion-icon>
+          <ion-label>Usuario</ion-label>
+          <ion-input formControlName="userNam" autocomplete="off" type="text"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="type==2">
+        <ion-icon name="md-contact" color="primary"></ion-icon>
+        <ion-label>Contraseña</ion-label>
+        <ion-input formControlName="password" autocomplete="off" type="text"></ion-input>
+      </ion-item>
+      <ion-item mode="ios" class='item'>
+          <ion-icon name="md-document" color="primary"></ion-icon>
+          <ion-label>Documento</ion-label>
+          <ion-input formControlName="UserID" autocomplete="off" type="text"></ion-input>
+          <input type="hidden" formControlName="idUser">
+      </ion-item>
+      <ion-item *ngIf="UserID.hasError('required') && UserID.touched">
+          <p>* El Cedula del Usuario es requerido!</p>
+      </ion-item>
+      <ion-item mode="ios" class='item'>
+          <ion-icon name="md-document" color="primary"></ion-icon>
+          <ion-label>Nombre</ion-label>
+          <ion-input formControlName="UserName" autocomplete="off" type="text"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="UserName.hasError('required') && UserName.touched">
+          <p>* El nombre del User es requerido!</p>
+      </ion-item>
+      <ion-item mode="ios" class='item'>
+          <ion-icon name="locate" color="primary"></ion-icon>
+          <ion-label>Direccion</ion-label>
+          <ion-input formControlName="UserAddress" autocomplete="off" type="text"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="UserAddress.hasError('required') && UserAddress.touched">
+          <p>* La direccion es requerido!</p>
+      </ion-item>
+      <ion-item mode="ios" class='item'>
+          <ion-icon name="call" color="primary"></ion-icon>
+          <ion-label>Telefono</ion-label>
+          <ion-input formControlName="UserPhone" autocomplete="off" type="number"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="UserPhone.hasError('required') && UserPhone.touched">
+          <p>* La telefono es requerido!</p>
+      </ion-item>
+      <ion-item mode="ios" class='item'>
+          <ion-icon name="at" color="primary"></ion-icon>
+          <ion-label>Email</ion-label>
+          <ion-input formControlName="UserEmail" autocomplete="off" type="email"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="UserEmail.hasError('required') && UserEmail.touched">
+          <p>* La email es requerido!</p>
+      </ion-item> 
+      <ion-item *ngIf="userNam.hasError('required') && userNam.touched">
+          <p>* La usuario es requerido!</p>
+      </ion-item>
+      <ng-container *ngIf="type==1; else elseTemplate">
+        <ion-button mode="ios" [disabled]="!registerUserForm.valid" color="primary" expand="block" type="submit">
+            <ion-label class="colorText">Registrar</ion-label>
+        </ion-button>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <ion-button mode="ios" color="primary" [disabled]="!registerUserForm.valid" expand="block" type="submit">
+            <ion-label class="colorText">Editar</ion-label>
+        </ion-button>
+      </ng-template>
+  </form>
+</ion-content>

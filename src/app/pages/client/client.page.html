@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/schedulesvisits"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-searchbar
+      mode="ios"
+      show-cancel-button="true"
+      cancel-button-text="Cancelar"
+      (ionChange)="onSearch($event)"
+      autocomplete="off"
+      autocorrect="on"
+      animated="true" 
+      spellcheck="true"
+      type="text"
+      ionBlur=""
+      color="ligth"
+      placeholder="Buscar cliente">
+    </ion-searchbar>
+  
+    <ion-buttons slot="end">
+      <ion-fab-button color="light" (click)="addClient()">
+        <ion-icon name="add" color="primary"></ion-icon>
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    
+    
+    <div text-center *ngIf="showSpinner;">
+        <ion-spinner name="lines"></ion-spinner>
+    </div>
+
+    <div *ngIf="showListClient;">
+        <div *ngIf="listAllClient && listAllClient.length > 0">
+            <ion-card class="card-schedules" *ngFor="let client of listAllClient">
+                <ion-card-header>
+                   <ion-card-title>Cliente: {{ client.client_name }}</ion-card-title>
+                    <ion-card-subtitle>Nit: {{ client.client_nit }}
+                        <div style="float:right">
+                            <ion-chip>
+                              <ion-icon mode="ios" (click)="editClient(client)" name="create" color="primary" class="icon-circle-small-e"></ion-icon>
+                              <ion-icon mode="ios" (click)="deleteClient(client.idclient)"  name="trash" color="primary" class="icon-circle-small-d"></ion-icon>
+                            </ion-chip>
+                        </div>
+                    </ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    Contacto: {{ client.client_contact }} <br> 
+                    Celular: {{ client.client_phone }} 
+                    <div style="float:right">
+                        <ion-chip>
+                            <ion-label>Detalle</ion-label>
+                            <ion-icon (click)="verClient(client)"  color="primary" mode="ios" name="search"></ion-icon>
+                        </ion-chip>
+                    </div>
+                </ion-card-content>
+              </ion-card>
+        </div>
+    </div>
+
+      <div *ngIf="showClient;">
+        <ion-card>
+            <ion-card-header>
+                  <ion-card-subtitle>Nit: {{listClient.client_nit}}</ion-card-subtitle>
+                  <ion-card-title>Empresa: {{listClient.client_name}}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                 Dirección: {{listClient.client_address}} <br>
+                 Telefono: {{listClient.client_phone}} <br>
+                 Correo: {{listClient.client_email}}  <br> 
+                 Contacto: {{listClient.client_contact}}  <br> 
+               </ion-card-content>
+          </ion-card>
+       </div>
+      </ion-content>

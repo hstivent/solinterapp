@@ -1,0 +1,113 @@
+<ion-header translucent="" class="ios header-ios header-translucent header-translucent-ios hydrated">
+  <ion-toolbar class="ios hydrated">
+    <ion-title *ngIf="showListSchedules" class="ios title-ios hydrated">Nueva sección</ion-title>
+    <ion-buttons slot="end" class="buttons-last-slot sc-ion-buttons-ios-h sc-ion-buttons-ios-s ios hydrated">
+      <ion-button (click)="dismiss()" class="ios button button-clear ion-activatable ion-focusable hydrated">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-spinner *ngIf="showSpiner" name="crescent" [ngClass]="{'spiner': showSpiner}"></ion-spinner>
+<ion-content padding>
+    <form [formGroup]="registerClientForm" (ngSubmit)="registerClient()">
+        <ion-item>
+          <ion-icon name="md-document"></ion-icon>
+          <ion-label>Nit</ion-label>
+          <ion-input formControlName="nit" autocomplete="off" type="text"></ion-input>
+          <input type="hidden" formControlName="id">
+          <input type="hidden" formControlName="imagetype">
+        </ion-item>
+    
+        <ion-item *ngIf="nit.hasError('required') && nit.touched">
+          <p>* El Nit es requerido!</p>
+        </ion-item>
+    
+        <ion-item>
+          <ion-icon name="md-contact"></ion-icon>
+          <ion-label>Nombre</ion-label>
+          <ion-input formControlName="name" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+    
+        <ion-item *ngIf="name.hasError('required') && name.touched">
+          <p>* El Nombre es requerido!</p>
+        </ion-item>
+    
+        <ion-item>
+          <ion-icon name="pin"></ion-icon>
+          <ion-label>Dirección</ion-label>
+          <ion-input formControlName="address" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+    
+        <ion-item *ngIf="address.hasError('required') && address.touched">
+          <p>*La Dirección es requerida!</p>
+        </ion-item>
+    
+        <ion-item>
+          <ion-icon name="call"></ion-icon>
+          <ion-label>Telefono</ion-label>
+          <ion-input formControlName="phone" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+    
+        <ion-item *ngIf="phone.hasError('required') && phone.touched">
+          <p>*El Telefono es requerido!</p>
+        </ion-item>
+    
+    
+        <ion-item>
+          <ion-icon name="at"></ion-icon>
+          <ion-label>Correo</ion-label>
+          <ion-input formControlName="email" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+    
+        <ion-item *ngIf="email.hasError('required') && email.touched">
+          <p>*El Correo es requerido!</p>
+        </ion-item>
+    
+    
+    
+        <ion-item>
+          <ion-icon name="md-people"></ion-icon>
+          <ion-label>Contacto</ion-label>
+          <ion-input formControlName="contact" autocomplete="off" type="text"></ion-input>
+        </ion-item>
+    
+        <ion-item *ngIf="contact.hasError('required') && contact.touched">
+          <p>*El Contacto es requerido!</p>
+        </ion-item>
+     <ion-item>
+            <ion-icon name="md-images"></ion-icon>
+            <ion-input formControlName="imageclient" (change)="onFileSelect($event)" type="file" accept="image/*"></ion-input>
+          </ion-item>
+    
+          <ion-item *ngIf="showUpdateImg">
+              <ion-avatar slot="start">
+                <img [src]="updateimg"/>
+             </ion-avatar> 
+            </ion-item>
+    
+    
+        <ion-item>
+          <ion-icon name="keypad"></ion-icon>
+          <ion-label>Tipo de cliente</ion-label>
+          <ion-select formControlName="typeclient" ok-text="Si" cancel-text="No">
+            <ion-select-option *ngFor="let type of listTypeClient" value={{type.idtypeclient}}>
+              {{type.clientypename}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+    
+        <ion-item *ngIf="typeclient.hasError('required') && typeclient.touched">
+          <p>*El Tipo de cliente es requerido!</p>
+        </ion-item>
+    
+        
+            <ion-button *ngIf="btnRegister" [disabled]="!registerClientForm.valid" shape="round" expand="block" fill="solid" color="dark"
+            type="submit">
+            <ion-label class="textcapitalize">Acceptar</ion-label>
+          </ion-button>
+      
+          <ion-button *ngIf="btnUpdate" expand="block" fill="solid" shape="round" color="dark" type="submit">
+            <ion-label class="textcapitalize">Editar</ion-label>
+          </ion-button>
+       
+      </form>
+</ion-content>
